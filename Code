@@ -1,0 +1,129 @@
+# Import necessary libraries
+import pandas as pd
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# File paths for datasets
+customers_file = "path_to/Customers.csv"
+products_file = "path_to/Products.csv"
+transactions_file = "path_to/Transactions.csv"
+
+# Load datasets
+customers = pd.read_csv(customers_file)
+products = pd.read_csv(products_file)
+transactions = pd.read_csv(transactions_file)
+
+# EDA Code
+def perform_eda():
+    # Basic information about datasets
+    print("Customers Dataset Info:")
+    print(customers.info())
+    print(customers.describe())
+
+    print("\nProducts Dataset Info:")
+    print(products.info())
+    print(products.describe())
+
+    print("\nTransactions Dataset Info:")
+    print(transactions.info())
+    print(transactions.describe())
+
+    # Visualizations
+    sns.countplot(data=customers, x='Region')
+    plt.title("Customer Distribution by Region")
+    plt.show()
+
+    sns.barplot(data=transactions, x='Quantity', y='TotalValue')
+    plt.title("Transaction Values by Quantity")
+    plt.show()
+
+# Lookalike Model Code
+def build_lookalike_model():
+    # Combine Customers and Transactions data
+    data = pd.merge(customers, transactions, on="CustomerID")
+
+    # Feature Engineering
+    data['TotalSpent'] = data['Quantity'] * data['Price']
+    grouped = data.groupby("CustomerID").agg({
+        'Region': 'first',
+        'TotalSpent': 'sum',
+        'Quantity': 'sum',
+    }).reset_index()
+
+    # Normalize data
+    scaler = StandardScaler()
+    features = ['TotalSpent', 'Quantity']
+    grouped[features] = scaler.fit_transform(grouped[features])
+
+    # Compute similarity
+    similarity_matrix = cosine_similarity(grouped[features])
+
+    # Top-3 lookalike customers
+    lookalikes = {}
+    for i, customer_id in enumerate(grouped['CustomerID'][:20]):
+        similar_indices = np.argsort(-similarity_matrix[i])[1:4]
+        lookalikes[customer_id] = [
+            (grouped['CustomerID'][j], similarity_matrix[i][j]) for j in similar_indices
+        ]
+
+    # Save results to CSV
+    lookalike_output = []
+    for customer_id, similar in lookalikes.items():
+        lookalike_output.append([
+            customer_id,
+            *[item for sublist in similar for item in sublist]
+        ])
+
+    columns = [
+        'cust_id', 'lookalike_cust_id_1', 'score_1',
+        'lookalike_cust_id_2', 'score_2', 'lookalike_cust_id_3', 'score_3'
+    ]
+    lookalike_df = pd.DataFrame(lookalike_output, columns=columns)
+    lookalike_df.to_csv("FirstName_LastName_Lookalike.csv", index=False)
+
+# Clustering Code
+def perform_clustering():
+    # Combine Customers and Transactions data
+    data = pd.merge(customers, transactions, on="CustomerID")
+
+    # Feature Engineering
+    data['TotalSpent'] = data['Quantity'] * data['Price']
+    grouped = data.groupby("CustomerID").agg({
+        'Region': 'first',
+        'TotalSpent': 'sum',
+        'Quantity': 'sum',
+    }).reset_index()
+
+    # Normalize data
+    scaler = StandardScaler()
+    features = ['TotalSpent', 'Quantity']
+    grouped[features] = scaler.fit_transform(grouped[features])
+
+    # Clustering
+    kmeans = KMeans(n_clusters=5, random_state=42)
+    grouped['Cluster'] = kmeans.fit_predict(grouped[features])
+
+    # Evaluation
+    from sklearn.metrics import davies_bouldin_score
+    db_index = davies_bouldin_score(grouped[features], grouped['Cluster'])
+    print(f"Davies-Bouldin Index: {db_index}")
+
+    # Visualization
+    pca = PCA(n_components=2)
+    pca_data = pca.fit_transform(grouped[features])
+    grouped['PCA1'], grouped['PCA2'] = pca_data[:, 0], pca_data[:, 1]
+
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(data=grouped, x='PCA1', y='PCA2', hue='Cluster', palette='viridis')
+    plt.title("Customer Clusters")
+    plt.show()
+
+# Execute Tasks
+perform_eda()
+build_lookalike_model()
+perform_clustering()
