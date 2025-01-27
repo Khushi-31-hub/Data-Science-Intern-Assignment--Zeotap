@@ -1,0 +1,16 @@
+1. EDA (Exploratory Data Analysis):
+
+Data loading and basic visualizations.
+Key statistics and distribution analysis.
+
+2. Lookalike Model:
+
+Merging customer and transaction data.
+Computing customer similarity and outputting the top 3 recommendations for the first 20 customers.
+
+3. Clustering:
+
+Feature engineering, normalization, and clustering using KMeans.
+Evaluation using the Davies-Bouldin Index and visualizing clusters with PCA.
+
+You can adjust paths to the CSV files and execute each section to complete the tasks.
