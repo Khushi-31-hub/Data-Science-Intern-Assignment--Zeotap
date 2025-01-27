@@ -1,0 +1,61 @@
+Task 1: Exploratory Data Analysis (EDA) and Business Insights
+Steps:
+Load Data:
+
+Load Customers.csv, Products.csv, and Transactions.csv into separate DataFrames.
+Clean data by handling missing values, correcting formats (e.g., dates), and removing duplicates.
+EDA:
+
+Visualize data distributions for numeric and categorical variables.
+Identify trends (e.g., sales over time, regional performance, popular products).
+Analyze customer behavior (e.g., average transaction value, repeat purchases).
+Business Insights (Example):
+
+Insight 1: The region with the highest sales is [Region], contributing [percentage]% to the total revenue.
+Insight 2: Product category [Category] has the highest demand, with a total of [X] units sold.
+Insight 3: [Percentage]% of customers are repeat buyers, indicating a high level of engagement.
+Insight 4: Sales peak during [time period], suggesting promotional efforts should focus on this timeframe.
+Insight 5: Customers who signed up during [specific period] have higher transaction values compared to others.
+Deliverables:
+A Python script or Jupyter Notebook performing the analysis.
+A report in PDF summarizing key insights (up to 500 words).
+
+Task 2: Lookalike Model
+Steps:
+Feature Engineering:
+
+Use profile information (e.g., Region, SignupDate) and transaction history (e.g., average spend, product preferences) to create customer embeddings.
+Model Development:
+
+Use similarity measures like cosine similarity or clustering-based methods to find similar customers.
+Generate recommendations based on both profile and transactional similarities.
+Output:
+
+For each customer ID (C0001 - C0020), list the top 3 most similar customers and their similarity scores.
+Deliverables:
+A CSV file (FirstName_LastName_Lookalike.csv) with the format:
+Copy
+Edit
+cust_id | lookalike_cust_id_1 | score_1 | lookalike_cust_id_2 | score_2 | lookalike_cust_id_3 | score_3
+A Jupyter Notebook or Python script documenting the approach.
+
+Task 3: Customer Segmentation / Clustering
+Steps:
+Data Preparation:
+
+Combine Customers.csv and Transactions.csv to create a unified dataset for clustering.
+Standardize features like transaction frequency, average purchase value, and product diversity.
+Clustering Algorithm:
+
+Use algorithms like K-Means, DBSCAN, or Hierarchical Clustering.
+Choose an optimal number of clusters (2-10) using the Elbow Method or Silhouette Score.
+Evaluation:
+
+Calculate clustering metrics (e.g., Davies-Bouldin Index, Silhouette Score).
+Visualize clusters using PCA or t-SNE for dimensionality reduction.
+Report:
+
+Summarize clustering results, the number of clusters, and DB Index value.
+Deliverables:
+A report in PDF summarizing clustering results.
+A Jupyter Notebook or Python script with the code.
