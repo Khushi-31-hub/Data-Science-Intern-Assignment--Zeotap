@@ -1,0 +1,20 @@
+# Data Science Assignment Submission
+
+## Overview
+This repository contains the submission for the eCommerce Transactions Dataset analysis.
+
+## Files and Directories
+### 1. EDA
+- **FirstName_LastName_EDA.ipynb**: Jupyter Notebook with exploratory data analysis.
+- **FirstName_LastName_EDA.pdf**: Summary report of business insights.
+
+### 2. Lookalike Model
+- **FirstName_LastName_Lookalike.ipynb**: Jupyter Notebook for lookalike customer recommendations.
+- **FirstName_LastName_Lookalike.csv**: CSV file containing the top 3 lookalike customers with similarity scores.
+
+### 3. Clustering
+- **FirstName_LastName_Clustering.ipynb**: Jupyter Notebook for customer segmentation.
+- **FirstName_LastName_Clustering.pdf**: Summary report of clustering results.
+
+## Instructions
+1. Clone the repository:
